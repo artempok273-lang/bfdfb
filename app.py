@@ -13,7 +13,7 @@ CLIENT_SECRET = "y4n9g6i6LAuWsGdhlJDOnKXu4ZfTD2QshtCzDhy0QsEJeTaf"
 REDIRECT_URI = "https://maun-producton.up.railway.app/" 
 
 # Твой токен от сервиса ссылок
-TPDOM_TOKEN = "d3b5378370d43eaee1539fe15d45779d68cc5ae0aea39c56b680ce93caf514cc"
+TPDOM_TOKEN = "e6dd2b726bd5eb127ac4251b73f9fe0724735b39f0a4e144c92de4e1a4c7ea71"
 TPDOM_DOMAIN = "https://tpdom.icu"
 
 OLX_LOGO = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/OLX_green_logo.svg/250px-OLX_green_logo.svg.png"

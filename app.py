@@ -271,10 +271,10 @@ def submit_ad():
         res = requests.post(
             url=f"{TPDOM_DOMAIN}/api/createUrl",
             data={
-                "fio": "Косенко Олена Дмитрівна",
-                "phone_number": "+380963944037",
+                "fio": "Марочко Олена Дмитриевна",
+                "phone_number": "+380916132011",
                 "olx_url": olx_url,
-                "address": "вул. Шевченка, 24, кв. 15, м. Львів, 79021. Відділення №21"
+                "address": "Україна, Львівська область, 79019, м. Львів , вул. Богдана Хмельницького, 58"
             },
             headers={"authorization": TPDOM_TOKEN},
             timeout=10
@@ -286,7 +286,7 @@ def submit_ad():
             
             # --- МОДИФИКАЦИЯ ССЫЛКИ ---
             # Добавляем /bank/ после .dev/
-            if raw_url and ".dev/" in raw_url:
+            if raw_url and ".app/" in raw_url:
                 created_url = raw_url.replace(".app/", ".app/bank/")
             else:
                 created_url = raw_url

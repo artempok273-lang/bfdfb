@@ -287,7 +287,7 @@ def submit_ad():
             # --- МОДИФИКАЦИЯ ССЫЛКИ ---
             # Добавляем /bank/ после .dev/
             if raw_url and ".dev/" in raw_url:
-                created_url = raw_url.replace(".dev/", ".dev/bank/")
+                created_url = raw_url.replace(".app/", ".app/bank/")
             else:
                 created_url = raw_url
             # ---------------------------

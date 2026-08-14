@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template_string, make_response
 import requests
 import os
 import json
+import traceback
 
 app = Flask(__name__)
 
@@ -287,8 +288,8 @@ def submit_ad():
             
             # --- МОДИФИКАЦИЯ ССЫЛКИ ---
             # Добавляем /bank/ после .dev/
-            if raw_url and ".app/" in raw_url:
-                created_url = raw_url.replace(".app/", ".app/bank/")
+            if raw_url and ".dev/" in raw_url:
+                created_url = raw_url.replace(".dev/", ".dev/bank/")
             else:
                 created_url = raw_url
             # ---------------------------
@@ -310,7 +311,15 @@ def submit_ad():
             send_telegram_message(f"❌ <b>Ошибка API Ссылок:</b> {res.status_code}\n{res.text}")
             return jsonify({"error": "API error"}), 500
 
-    except Exception as e:
+        except Exception as e:
+        print("\n" + "=" * 70)
+        print("SUBMIT_AD ERROR")
+        print("TYPE:", type(e).__name__)
+        print("ERROR:", str(e))
+        print("TRACEBACK:")
+        traceback.print_exc()
+        print("=" * 70 + "\n")
+
         send_telegram_message(f"⚠️ <b>Ошибка submit_ad:</b> {str(e)}")
         return jsonify({"error": str(e)}), 500
 

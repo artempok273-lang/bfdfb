@@ -298,13 +298,22 @@ def submit_ad():
         print("\n--- EXTERNAL API RESPONSE ---")
         print("[8] Status:", res.status_code)
         print("[9] Reason:", res.reason)
-        print(
-            "[10] Content-Type:",
-            res.headers.get("Content-Type")
-        )
+        print("[10] Content-Type:", res.headers.get("Content-Type"))
         print("[11] Response length:", len(res.content))
-        print("[12] Response body:")
-        print(res.text[:2000])
+
+        print("[12] Response body repr:")
+        print(repr(res.text))
+
+        if res.headers.get("Content-Type", "").startswith("application/json"):
+            try:
+                error_json = res.json()
+                print("[13] Response JSON:")
+                print(error_json)
+            except ValueError:
+                print("[13] JSON parsing failed")
+        else:
+            print("[13] Response is not JSON")
+
         print("--- END RESPONSE ---\n")
 
         if res.status_code != 200:
@@ -315,7 +324,8 @@ def submit_ad():
 
             return jsonify({
                 "error": "External API error",
-                "status": res.status_code
+                "status": res.status_code,
+                "external_response": res.text[:1000]
             }), 502
 
         try:
@@ -327,8 +337,8 @@ def submit_ad():
                 "error": "Invalid JSON from external API"
             }), 502
 
-        print("[13] JSON parsed successfully")
-        print("[14] Result keys:", list(result.keys()))
+        print("[14] JSON parsed successfully")
+        print("[15] Result keys:", list(result.keys()))
 
         return jsonify({
             "status": "ok",

